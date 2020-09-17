@@ -1,0 +1,32 @@
+<section class="example-container">
+    <div class="step-navigation-bar">
+        <div class="steps_wrapper">
+            <button class="quiz-stepper" *ngFor="let step of steps; let i = index;"
+                [ngClass]="{ 'step-active': selectedIndex === i }" (click)="onClick(i)"></button>
+        </div>
+
+        <div class="stepper_btns">
+            <button mat-button class="mr-3 step-nav-btns" cdkStepperPrevious [disabled]="selectedIndex == 0">
+                Prev
+            </button>
+            <button *ngIf="selectedIndex !== stepsCount; else stepPublish" mat-button cdkStepperNext
+                class="step-nav-btns" color="secondary">
+                Next
+            </button>
+            <ng-template #stepPublish>
+                <button mat-button class="step-nav-btns" color="secondary" (click)="Publish(selectedIndex)"
+                    [disabled]="isSubmitted" *ngIf="type !== 'View'">
+                    <span *ngIf="!isSubmitted"> {{ type }}</span>
+                    <mat-spinner *ngIf="isSubmitted" strokeWidth="3" [diameter]="25"></mat-spinner>
+
+                </button>
+                <button class="step-nav-btns" mat-button cdkStepperNext disabled *ngIf="type === 'View'">
+                    Next
+                </button>
+            </ng-template>
+        </div>
+    </div>
+    <div [style.display]="selected ? 'block' : 'none'" class="mt-2">
+        <ng-container [ngTemplateOutlet]="selected.content"></ng-container>
+    </div>
+</section>

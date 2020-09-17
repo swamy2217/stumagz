@@ -1,0 +1,29 @@
+$text-primary: #13a864;
+.step-navigation-bar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.steps_wrapper {
+    margin-top: -15px;
+    margin-left: 33px;
+}
+.quiz-stepper {
+    background: transparent;
+    border: 0;
+    margin-right: 0.2rem;
+    border-bottom: 2px solid #ccc;
+    width: 40px;
+    &.step-active {
+        color: $text-primary;
+        border-bottom: 2px solid $text-primary;
+    }
+}
+
+.stepper_btns {
+    margin-top: -22px;
+}
+
+.step-nav-btns {
+    min-width: 80px;
+}

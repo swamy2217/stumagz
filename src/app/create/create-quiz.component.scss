@@ -1,0 +1,143 @@
+$text-primary: #13a864;
+$lightColor: #9e9e9e;
+
+.quiz-container {
+    max-width: 835px;
+    margin: 0 auto;
+    padding: 15px;
+    margin-top: 60px;
+    .info_text {
+        color: $text-primary;
+        font-weight: 600;
+    }
+    .close_icon {
+        cursor: pointer;
+    }
+    .card-item {
+        background-color: #ffffff;
+        padding: 3rem;
+        min-height: 200px;
+        border-radius: 0.25rem;
+    }
+
+    /* step1 css starts here */
+    .card-item {
+        .card_item_title {
+            font-weight: 500;
+        }
+    }
+    .image_file {
+        height: 100%;
+        left: 0;
+        outline: 0;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+    .image_thumbnail {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 10;
+    }
+    .step1 {
+        .add-image {
+            height: 200px;
+            background-color: #f7f7f7;
+            position: relative;
+            img {
+                height: 190px;
+                display: flex;
+                margin: 5px auto;
+            }
+            .image-text {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                height: 100%;
+                justify-content: center;
+                ion-icon {
+                    font-size: 2rem;
+                }
+            }
+        }
+    }
+}
+
+.create_qts_container {
+    .fw-600 {
+        font-weight: 600;
+    }
+}
+.input_files,
+.cursor-pointer {
+    cursor: pointer;
+}
+.option_file {
+    position: relative;
+    width: 25px;
+    cursor: pointer;
+}
+.z10 {
+    z-index: 10;
+}
+.alert {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    &-danger {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+    &-success {
+        color: #3c763d;
+        background-color: #dff0d8;
+        border-color: #d6e9c6;
+    }
+}
+/* .questions_block {
+    &:hover {
+        background-color: #f7f7f7;
+    }
+} */
+/* create questions block */
+::ng-deep .mat-form-field {
+    .mat-form-field-wrapper {
+        padding-bottom: 0.34em !important;
+    }
+    .mat-form-field-infix {
+        display: flex;
+    }
+}
+::ng-deep .mat-radio-container,
+::ng-deep .mat-radio-container .mat-radio-outer-circle,
+::ng-deep .mat-radio-container .mat-radio-inner-circle {
+    border: none;
+    width: 0;
+    opacity: 0;
+}
+::ng-deep {
+    .mat-radio-checked .mat-radio-label-content {
+        color: $text-primary;
+    }
+}
+::ng-deep .mat-form-field-underline,
+::ng-deep .mat-form-field-ripple {
+    background-color: transparent !important;
+}
+::ng-deep .mat-radio-button {
+    color: $lightColor;
+}
+
+@media screen and (max-width: 991px) {
+    .quiz-container {
+        max-width: 100%;
+        margin-top: 20px;
+    }
+    .card-item {
+        padding: 1rem;
+    }
+}

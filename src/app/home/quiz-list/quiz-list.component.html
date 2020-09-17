@@ -1,0 +1,67 @@
+<div class="content-wrapper">
+    <!-- <div class="row">
+        <ng-container *ngFor="let feature of featureList; let i = index">
+            <div class="col-sm-6 col-md-4 px-2 mb-3">
+                <div
+                    class="card w-100"
+                    [routerLink]="['/home/quiz-list/' + feature.title]"
+                >
+                    <img
+                        class="card-img-top"
+                        [src]="'https://picsum.photos/200/150/?random&img=' + i"
+                    />
+                    <div class="quiz-content">
+                        <div class="card-title">
+                            <div>{{ feature.title | titlecase }}</div>
+                            Quizzes
+                        </div>
+                        <div class="card-text">
+                            {{ feature.questions }} Quizzes
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div> -->
+    <!-- <h3 class="quiz_subhead">{{ type }} Quizzes</h3> -->
+    <div class="row quiz_container" *ngIf="loadingStatus">
+        <ng-container *ngFor="let list of [1, 2, 3, 4, 5, 6]; let i = index">
+            <div class="col-md-6 mb-3">
+                <ngx-skeleton-loader animation="progress" [theme]="{
+                        'border-radius': '0.52rem',
+                        height: '150px'
+                    }"></ngx-skeleton-loader>
+            </div>
+        </ng-container>
+    </div>
+    <div class="row quiz_container" *ngIf="!loadingStatus && Listdata.length">
+        <ng-container *ngFor="let item of Listdata; let i = index">
+            <div class="col-md-6 mb-3">
+                <div class="card w-100" [routerLink]="['/quiz/' + item.id]">
+                    <img class="card-img-top" [src]="item.coverImageUrl"
+                        onerror="this.onerror=null;this.src='https://picsum.photos/300/200/?random;'" />
+                    <div class="quiz-content">
+                        <div class="card-title">
+                            <div>{{ item.name }}</div>
+                        </div>
+                        <div class="card-text">
+                            <div class="duration sub_text">
+                                <mat-icon aria-hidden="false" fontSet="material-icons-outlined">watch_later</mat-icon>
+                                {{ item.durationInMinutes }} mins
+                            </div>
+                            <div class="sub_text ml-3">
+                                <mat-icon aria-hidden="false" fontSet="material-icons-outlined">tune</mat-icon>
+                                {{ item.numberOfQuestions }} Questions
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <ng-container *ngIf="!Listdata.length">
+        <div class="col-12 norecords">
+            <img src="assets/nodata.png" />
+        </div>
+    </ng-container>
+</div>

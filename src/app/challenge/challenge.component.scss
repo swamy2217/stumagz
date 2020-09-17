@@ -1,0 +1,214 @@
+@import "../../variables.scss";
+
+.quiz-container {
+    max-width: 835px;
+    margin: 0 auto;
+    padding: 15px;
+    margin-top: 60px;
+    .lefttext {
+        /* margin-top: auto; */
+        .close_icon {
+            cursor: pointer;
+        }
+    }
+    .quiz_title {
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 5px;
+        height: 45px;
+    }
+    .img_container {
+        height: 230px;
+        background-color: #c2c1c6;
+        justify-content: center;
+        display: flex;
+        img {
+            width: 100% !important;
+            -o-object-fit: cover;
+            object-fit: cover;
+            height: 230px;
+        }
+    }
+    .quiz_content {
+        margin-top: -35px;
+        background: #fff;
+        border-radius: 5px;
+        z-index: 10;
+        position: relative;
+        .card-text {
+            margin-top: 0.45rem;
+            font-size: 0.8rem;
+        }
+        .sub_text {
+            line-height: 1.2rem;
+            display: inline-flex;
+            mat-icon {
+                font-size: 16px;
+                width: 18px;
+                padding-top: 2px;
+            }
+        }
+    }
+}
+.question_image {
+    width: 100%;
+    /* justify-content: center; */
+    align-items: center;
+    display: flex;
+    img {
+        object-fit: contain;
+    }
+}
+.info_text {
+    color: #13a864;
+    font-weight: 600;
+    margin-top: 4px;
+    text-overflow: ellipsis;
+}
+.content_header {
+    font-weight: 500;
+}
+
+/* .quiz-attempts-questions { */
+ol {
+    margin: 15px 0 0 -40px;
+}
+ol li {
+    margin-left: 40px;
+    width: 34.6rem;
+}
+
+.options {
+    margin: 0 0 -5px 0;
+    padding: 5px 5px 5px 30px;
+
+    mat-checkbox:first-child {
+        margin-top: 10px;
+        padding-top: 30px;
+    }
+
+    mat-checkbox {
+        margin-top: -10px !important;
+
+        li {
+            min-height: 47px;
+        }
+    }
+
+    mat-radio-button,
+    mat-checkbox {
+        cursor: pointer;
+        width: 39.5rem;
+        min-height: 47px;
+        /* font-size: 20px !important; */
+        color: $color-dark-brown;
+        /* background-color: $color-light-gray; */
+        border-bottom: 1px solid $color-medium-gray;
+        /* padding: 10px 0; */
+        margin-left: -5px;
+        vertical-align: middle;
+        font-weight: 500;
+
+        &.submission_data:hover:not(.is-selected) {
+            border-bottom: 1px solid $color-success;
+            background-color: #f2fdf5;
+            color: $color-success;
+        }
+    }
+
+    .is-correct,
+    .is-selected {
+        background-color: $color-success;
+    }
+
+    .is-incorrect {
+        background-color: $color-danger;
+    }
+}
+
+.messages {
+    display: flex;
+    justify-content: center;
+    height: auto;
+
+    .message {
+        font-size: 16px;
+        font-style: italic;
+        padding: 10px !important;
+        width: 35rem;
+        height: auto;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        vertical-align: middle;
+        word-wrap: break-word;
+        border-radius: 5px;
+        margin-top: -10px;
+        word-wrap: break-word;
+    }
+
+    .correct-message {
+        border: 1px solid $color-success;
+        color: $color-success;
+    }
+
+    .wrong-message {
+        border: 1px solid $color-danger;
+        color: $color-danger;
+    }
+}
+.submit_btns {
+    min-height: 36px;
+    min-width: 76px;
+}
+// hide the radio buttons/checkboxes next to the answer choice
+::ng-deep .options .mat-radio-button .mat-radio-label {
+    min-height: 47px;
+}
+::ng-deep .mat-radio-button .mat-radio-container {
+    display: none;
+}
+::ng-deep .mat-checkbox .mat-checkbox-inner-container {
+    display: none;
+}
+/* } */
+::ng-deep .mat-card-header-text {
+    width: 100% !important
+    ;
+}
+/* Leader board */
+.leaderboard {
+    font-weight: 600;
+}
+.mat-list-base .mat-list-item.mat-2-line {
+    height: 55px;
+}
+::ng-deep .mat-list-base .mat-list-item .mat-list-item-content {
+    padding: 0 !important;
+}
+::ng-deep .mat-list-base {
+    padding-top: 0 !important;
+}
+::ng-deep .mat-list-text {
+    padding-left: 5px !important;
+}
+::ng-deep .mat-list-base .mat-list-item .mat-line {
+    line-height: 17px;
+    font-size: 14px !important;
+    .small {
+        font-size: 80%;
+        color: #757575;
+    }
+}
+/* Leader board  css ends */
+
+@media screen and (max-width: 991px) {
+    .quiz-container {
+        max-width: 100%;
+        margin-top: 0px;
+        .img_container {
+            margin-left: -15px;
+            margin-right: -15px;
+        }
+    }
+}

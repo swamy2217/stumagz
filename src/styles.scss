@@ -1,0 +1,260 @@
+@import "../node_modules/@angular/material/theming";
+@import "./variables";
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/grid";
+@import "../node_modules/bootstrap/scss/utilities";
+@import "reset";
+
+html,
+body {
+    height: 100%;
+}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+        "Droid Sans", "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #e8e8e8;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+.d-space-between {
+    display: flex;
+    justify-content: space-between;
+}
+.x-small {
+    font-size: 0.7rem;
+}
+::ng-deep .mat-button {
+    font-weight: 400;
+}
+
+@include mat-core();
+
+$primary: mat-palette($mat-green, 700);
+$accent: mat-palette($mat-gray, 700);
+
+$theme: mat-light-theme($primary, $accent);
+
+@include angular-material-theme($theme);
+
+.cs-max-500 {
+    max-width: 500px;
+}
+.mat-dark {
+    background-color: $black-87-opacity;
+    color: #fff;
+}
+.mat-secondary {
+    background-color: $color-green !important;
+    color: #fff;
+}
+.mat-light {
+    background-color: #fff;
+    color: $color-grey-500;
+}
+.mat-textlight {
+    color: $color-grey-500;
+}
+
+/*=================================================================
+FORM ELEMENT -  CSS START
+========================================================================= */
+textarea.mat-input-element {
+    resize: none !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/*=================================================================
+TOAST CLASS CUSTOM -  CSS START
+========================================================================= */
+.toast {
+    border: inherit !important;
+    border-radius: 4px !important;
+}
+.toast-success {
+    background-color: $color-success !important;
+}
+.toast-warning {
+    background-color: $color-warning !important;
+}
+.toast-error {
+    background-color: $color-danger !important;
+}
+@media (max-width: 767px) {
+    .toast-container .toast {
+        width: 260px !important;
+    }
+}
+@media (max-width: 959px) {
+    .d-md-down-none {
+        display: none;
+    }
+    /* .open_asidebar {
+        display: none;
+    } */
+}
+@media (max-width: 1279px) {
+    .aside.active {
+        width: 100% !important;
+        max-width: 500px;
+        padding-top: 0px !important;
+        padding-left: 15px;
+        .card-body {
+            margin-top: 35px;
+        }
+    }
+    .hamburger-menu {
+        width: 53px;
+        height: 53px;
+        cursor: pointer;
+        margin: 0;
+        padding-top: 17px;
+        position: absolute;
+        top: 0;
+        left: 15px;
+        z-index: 999999;
+        span {
+            width: 24px;
+            color: inherit;
+            background-color: #161414 !important;
+            display: block;
+            height: 2px;
+            margin: 0 auto 5px;
+            -webkit-transition: all 0.3s ease-in-out 0;
+            -moz-transition: all 0.3s ease-in-out 0;
+            -ms-transition: all 0.3s ease-in-out 0;
+            -o-transition: all 0.3s ease-in-out 0;
+            transition: all 0.3s ease-in-out 0;
+            &:first-child {
+                margin: 7px 0 0 14px;
+                -ms-transform: rotate(50deg); /* IE 9 */
+                -webkit-transform: rotate(50deg); /* Safari */
+                transform: rotate(50deg);
+            }
+            &:nth-child(2) {
+                display: none;
+            }
+            &:last-child {
+                margin: -2px 0 0 14px;
+                -ms-transform: rotate(-50deg); /* IE 9 */
+                -webkit-transform: rotate(-50deg); /* Safari */
+                transform: rotate(-50deg);
+            }
+        }
+    }
+    .asideMenu {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        z-index: 9999;
+        visibility: hidden;
+        opacity: 0;
+        height: 100%;
+        transition: all 0.3s ease-in-out 0s;
+    }
+
+    .asideMenu.active {
+        visibility: visible;
+        opacity: 1;
+        right: 0;
+    }
+}
+.loader {
+    line-height: 1;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    background: rgb(239, 241, 246) no-repeat;
+    background-color: rgb(239, 241, 246);
+    line-height: 1;
+    overflow: hidden;
+    position: relative;
+}
+/* =====================================================
+     Loader / spinner  -CSS 
+======================================================= */
+.app-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+      .spin-loader,
+      .spin-loader:before,
+      .spin-loader:after {
+        background: $color-green;
+        -webkit-animation: load1 1s infinite ease-in-out;
+        animation: load1 1s infinite ease-in-out;
+        width: 1em;
+        height: 4em;
+      }
+      .spin-loader {
+        color: $color-green;
+        text-indent: -9999em;
+        margin: 88px auto;
+        position: relative;
+        font-size: 11px;
+        -webkit-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-animation-delay: -0.16s;
+        animation-delay: -0.16s;
+      }
+      .spin-loader:before,
+      .spin-loader:after {
+        position: absolute;
+        top: 0;
+        content: '';
+      }
+      .spin-loader:before {
+        left: -1.5em;
+        -webkit-animation-delay: -0.32s;
+        animation-delay: -0.32s;
+      }
+      .spin-loader:after {
+        left: 1.5em;
+      }
+      @-webkit-keyframes load1 {
+        0%,
+        80%,
+        100% {
+          box-shadow: 0 0;
+          height: 4em;
+        }
+        40% {
+          box-shadow: 0 -2em;
+          height: 5em;
+        }
+      }
+      @keyframes load1 {
+        0%,
+        80%,
+        100% {
+          box-shadow: 0 0;
+          height: 4em;
+        }
+        40% {
+          box-shadow: 0 -2em;
+          height: 5em;
+        }
+      }
+      
+}  
+
+

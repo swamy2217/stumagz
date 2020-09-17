@@ -1,0 +1,48 @@
+.mat-list-base .mat-list-item.mat-2-line {
+    height: 55px;
+}
+::ng-deep .mat-list-base .mat-list-item .mat-list-item-content {
+    padding: 0 !important;
+}
+::ng-deep .mat-list-base {
+    padding-top: 0 !important;
+}
+::ng-deep .mat-list-text {
+    padding-left: 5px !important;
+}
+::ng-deep .mat-list-base .mat-list-item .mat-line {
+    line-height: 17px;
+    font-size: 14px !important;
+    .small {
+        font-size: 80%;
+        color: #757575;
+    }
+}
+.skeleton-wrapper {
+    width: 100%;
+    height: auto;
+    flex: 1;
+    display: inline-flex;
+    .gravatar {
+        width: 45px;
+        height: 45px;
+    }
+    .gravatar-title {
+        width: 150px;
+        padding: 10px;
+        height: 55px;
+    }
+}
+.sub_header {
+    font-weight: 600;
+    font-size: 16px;
+}
+.weeklyToggle {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    font-size: 10px;
+    margin-top: -13px;
+    margin-left: auto;
+    letter-spacing: 1px;
+}

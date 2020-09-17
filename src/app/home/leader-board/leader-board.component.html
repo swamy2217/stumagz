@@ -1,0 +1,95 @@
+<h3 class="mt-2 mb-1 font-weight-bold">{{ boardTitle }}</h3>
+<ng-container *ngIf="isLoadingData">
+    <ng-container *ngFor="let item of [1, 2, 3]">
+        <div class="skeleton-wrapper">
+            <div class="gravatar">
+                <ngx-skeleton-loader
+                    appearance="circle"
+                    [theme]="{ width: '40px', height: '40px' }"
+                >
+                </ngx-skeleton-loader>
+            </div>
+            <div class="gravatar-title">
+                <div>
+                    <ngx-skeleton-loader
+                        [theme]="{
+                            width: '70px',
+                            'border-radius': '0',
+                            height: '15px',
+                            'margin-bottom': '0px'
+                        }"
+                    ></ngx-skeleton-loader>
+                </div>
+                <div>
+                    <ngx-skeleton-loader
+                        [theme]="{
+                            width: '140px',
+                            'border-radius': '0',
+                            height: '15px'
+                        }"
+                    ></ngx-skeleton-loader>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-container>
+
+<ng-container *ngIf="!isLoadingData">
+    <!-- Skill boards -->
+    <ng-container *ngIf="!boardTitle; else OtherBoards">
+        <ng-container *ngFor="let info of leaderBoardInfo">
+            <div matLine class="mt-4 sub_header">{{ info.groupName }}</div>
+            <mat-list>
+                <mat-list-item *ngFor="let card of info.scoreCardList">
+                    <img matListAvatar src="assets/user.png" alt="..." />
+                    <div matLine>{{ card.fullName | titlecase }}</div>
+                    <p matLine>
+                        <span class="small" color="medium">
+                            {{ card.userName | titlecase }}
+                        </span>
+                    </p>
+                </mat-list-item>
+            </mat-list>
+        </ng-container>
+    </ng-container>
+
+    <ng-template #OtherBoards>
+        <!-- *ngIf="boardTitle === 'Leader Board'" -->
+        <mat-list class="d-flex flex-column">
+            <div class="weeklyToggle">
+                monthly
+                <mat-slide-toggle
+                    class="example-margin"
+                    [color]="color"
+                    [(ngModel)]="isChecked"
+                    (ngModelChange)="dataChanged($event)"
+                >
+                </mat-slide-toggle>
+                weekly
+            </div>
+
+            <ng-container *ngIf="isChecked; else showMonthly">
+                <mat-list-item *ngFor="let info of weeklyBoard">
+                    <img matListAvatar src="assets/user.png" alt="..." />
+                    <div matLine>{{ info.fullName | titlecase }}</div>
+                    <p matLine>
+                        <span class="small" color="medium">
+                            {{ info.userName | titlecase }}
+                        </span>
+                    </p>
+                </mat-list-item>
+            </ng-container>
+            <ng-template #showMonthly>
+                <mat-list-item *ngFor="let info of monthlyBoard">
+                    <img matListAvatar src="assets/user.png" alt="..." />
+                    <div matLine>{{ info.fullName | titlecase }}</div>
+                    <p matLine>
+                        <span class="small" color="medium">
+                            {{ info.userName | titlecase }}
+                        </span>
+                    </p>
+                </mat-list-item>
+            </ng-template>
+        </mat-list>
+    </ng-template>
+</ng-container>

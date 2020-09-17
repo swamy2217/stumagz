@@ -1,0 +1,67 @@
+<section class="container-fluid">
+    <div class="justify-content-center py-3 p-md-4">
+        <div class="content-wrapper">
+            <div class="row">
+                <ng-container *ngIf="isStatsLoading">
+                    <ng-container *ngFor="let list of [1, 2, 3]; let i = index">
+                        <div class="col-4">
+                            <ngx-skeleton-loader [theme]="{
+                                    'border-radius': '0.52rem',
+                                    height: '150px'
+                                }"></ngx-skeleton-loader>
+                        </div>
+                    </ng-container>
+                </ng-container>
+
+                <ng-container *ngIf="!isStatsLoading && featureList.length">
+                    <ng-container *ngFor="let feature of featureList; let i = index">
+                        <div class="col-4">
+                            <div class="card w-100" (click)="openFeatureData(feature.groupName)">
+                                <img class="card-img-top" [src]="
+                                        'https://picsum.photos/200/150/?random&img=' +
+                                        i
+                                    " />
+                                <div class="quiz-content">
+                                    <div class="card-title">
+                                        <div>
+                                            {{ feature.groupName | titlecase }}
+                                        </div>
+                                        Quizzes
+                                    </div>
+                                    <div class="card-text">
+                                        {{ feature.groupCount }} Quizzes
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+            <div class="feature_title mt-3 d-flex justify-content-between">
+                <h3 class="quiz_subhead">{{ featureType }} Quizzes</h3>
+                <div class="open_asidebar d-block d-lg-none">
+                    <mat-icon aria-hidden="false" color="textlight" (click)="openAsideMenu()">
+                        menu
+                    </mat-icon>
+                </div>
+            </div>
+            <app-quiz-list [type]="featureType" [Listdata]="featureData" [loadingStatus]="isLoading"></app-quiz-list>
+        </div>
+
+        <div class="aside asideMenu" [ngClass]="{ active: toggleMenu }">
+            <div class="card">
+                <div id="hamburgerMenu" class="hamburger-menu" (click)="closeSidebar()">
+                    <span></span> <span></span> <span></span>
+                </div>
+                <div class="card-body">
+                    <button mat-raised-button color="dark" class="w-100" [routerLink]="['/create-quiz']">
+                        Create Quiz
+                    </button>
+                    <app-leader-board [boardTitle]="boardTitle" [isLoadingData]="isBoardLoading"
+                        [leaderBoardInfo]="boardData" [weeklyBoard]="weeklyBoard" [monthlyBoard]="monthlyBoard">
+                    </app-leader-board>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

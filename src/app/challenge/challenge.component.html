@@ -1,0 +1,289 @@
+<div class="container quiz-container">
+    <!-- content is loading -->
+    <ng-container *ngIf="isLoading">
+        <div class="img_container mt-3"></div>
+        <div class="quiz_content mx-3">
+            <ngx-skeleton-loader [theme]="{
+                    height: '180px'
+                }">
+            </ngx-skeleton-loader>
+        </div>
+    </ng-container>
+
+    <!-- start quiz here -->
+    <ng-container *ngIf="quizInfo && !isLoading && step === 1">
+        <div class="d-flex quiz_title">
+            <div class="lefttext d-flex">
+                <mat-icon class="close_icon" aria-hidden="false" color="textlight" [routerLink]="['/home']">close
+                </mat-icon>
+                <div class="info_text ml-3 d-none d-md-block" [innerHTML]="quizInfo.name"></div>
+            </div>
+            <div class="d-flex">
+                <ng-container *ngIf="quizInfo?.allowedOperations?.attempt">
+                    <!-- *ngIf="showStartButton; else quizEnded" -->
+                    <!-- <button class="mr-1 mr-md-3" mat-raised-button color="light">
+                        CHALLENGE
+                    </button> -->
+                    <ng-container *ngIf="showTimer; else showButton">
+                        <button mat-raised-button color="secondary">
+                            <!-- <timer [value]="countDownLeftTime" (onComplete)='handleEvent($event)'></timer> -->
+                            <!-- <countdown-timer [end]="'2020-09-01 00:00:00'"></countdown-timer> -->
+                            <!-- <countdown-timer style="font-size:30px;color:white;font-family:Roboto;"
+                                [end]="'2020-12-01 00:00:00'"></countdown-timer> -->
+                            <countdown [config]="countDownconfig"></countdown>
+                        </button>
+                    </ng-container>
+                    <ng-template #showButton>
+                        <button class="submit_btns" mat-raised-button color="secondary" (click)="startQuiz()"
+                            [disabled]="spinner">
+                            <span *ngIf="!spinner">START</span>
+                            <mat-spinner *ngIf="spinner" strokeWidth="3" [diameter]="25"></mat-spinner>
+                        </button>
+                    </ng-template>
+                </ng-container>
+                <button *ngIf="quizInfo?.allowedOperations?.review" class="submit_btns ml-1" mat-raised-button
+                    color="secondary" (click)="quizReview()">
+                    Review
+                </button>
+                <button *ngIf="quizInfo?.allowedOperations?.leaderBoard" class="submit_btns ml-1" mat-raised-button
+                    color="secondary" (click)="showLeaderBoard()">
+                    LeaderBoard
+                </button>
+                <!-- <ng-template #quizEnded>
+                    <button mat-raised-button color="light" disabled>
+                        Quiz Ended
+                    </button>
+                </ng-template> -->
+            </div>
+        </div>
+        <div class="info_text ml-3 d-block d-md-none">{{ quizInfo.name }}</div>
+        <div class="img_container mt-3">
+            <img class="" [src]="quizInfo.coverImageUrl"
+                onerror="this.onerror=null;this.src='https://picsum.photos/800/230/?random;'" />
+        </div>
+        <div class="quiz_content p-4 mx-lg-3">
+            <h2 class="qname mb-2">{{ quizInfo.name }}</h2>
+            <div class="qtype mb-3">{{ quizInfo.type }}
+                <span *ngIf="quizInfo?.type === 'SKILL' && quizInfo?.skillCode">({{quizInfo?.skillCode}})</span>
+                <span *ngIf="quizInfo?.type === 'BRAND' && quizInfo?.brandCode">({{quizInfo?.brandCode}})</span>
+            </div>
+            <div class="qtype mb-3">
+                {{ quizInfo.startTime | date: "medium" }}
+            </div>
+            <div class="card-text d-flex">
+                <div class="duration sub_text">
+                    <mat-icon aria-hidden="false" fontSet="material-icons-outlined">watch_later</mat-icon>
+                    {{ quizInfo.durationInMinutes }} mins
+                </div>
+                <div class="sub_text ml-3">
+                    <mat-icon aria-hidden="false" fontSet="material-icons-outlined">tune</mat-icon>
+                    {{ quizInfo.numberOfQuestions }} Questions
+                </div>
+            </div>
+            <div class="qdesc my-3">
+                <span class="content_header"> Description: </span>
+                <div class="small">
+                    <div [innerHTML]="quizInfo.description"></div>
+                </div>
+            </div>
+            <div class="qinstruction mb-3">
+                <span class="content_header">Instruction:</span>
+                <div [innerHTML]="quizInfo.instructions"></div>
+            </div>
+            <div *ngIf="quizInfo.videoUrl">
+                <span class="content_header">videoUrl:</span>
+                <p> <a [href]="quizInfo.videoUrl" target="_blank">{{quizInfo.videoUrl}}</a></p>
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- Attempt questions -->
+    <ng-container *ngIf="step === 2 && !isLoading">
+        <div class="d-flex quiz_title">
+            <div class="lefttext d-flex">
+                <mat-icon class="close_icon" aria-hidden="false" color="textlight" [routerLink]="['/home']">close
+                </mat-icon>
+                <div class="info_text ml-3" [innerHTML]="quizInfo.name"></div>
+            </div>
+            <div>
+
+            </div>
+        </div>
+
+        <app-quiz-stepper (isPublished)="pubishForm($event)" [isSubmitted]="isPublishButtonClicked"
+            [stepsCount]="stepsCount" [type]="'Next'">
+            <form class="quiz-attempts-questions">
+                <cdk-step *ngFor="let questionInfo of QuizData.attemptQuestions; let idx = index">
+                    <mat-card>
+                        <mat-card-header class="w-100">
+                            <div mat-card-avatar class="header-image"></div>
+                            <mat-card-subtitle>Question No {{ idx + 1 }} of
+                                {{ QuizData.attemptQuestions.length }}</mat-card-subtitle>
+                            <mat-card-title class="question_image w-100">
+                                <img *ngIf="questionInfo?.question?.imageUrl" [src]="questionInfo.question.imageUrl" />
+                                <div *ngIf="questionInfo?.question?.text" [innerHTML]="questionInfo.question.text">
+                                </div>
+                            </mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content class="options submission_data">
+                            <ol *ngIf="questionInfo?.question?.type === 'mcq' || questionInfo?.question?.type === 'MCQ'; else trueFalseQts"
+                                class="single-answer">
+                                <div class="options" *ngFor="let option of questionInfo?.question?.options; index as i">
+                                    <mat-radio-button (change)="setSelected(idx, i, option.sno, questionInfo.question)"
+                                        [class.is-selected]="option.selected">
+                                        <li>
+                                            <img *ngIf="option?.imageUrl" [src]="option.imageUrl"
+                                                class="w-100 d-flex" />
+                                            <div class="d-flex">{{option.text}}</div>
+                                        </li>
+                                    </mat-radio-button>
+                                </div>
+                            </ol>
+                            <!-- else True false questions -->
+                            <ng-template #trueFalseQts>
+                                <ol class="single-answer">
+                                    <div class="options"
+                                        *ngFor="let option of questionInfo?.question?.options; index as i">
+                                        <mat-radio-button
+                                            (change)="setSelected(idx, i, option.sno, questionInfo.question)"
+                                            [class.is-selected]="option.selected">
+                                            <li>{{ option.text }}</li>
+                                        </mat-radio-button>
+                                    </div>
+                                </ol>
+                            </ng-template>
+                        </mat-card-content>
+                    </mat-card>
+                </cdk-step>
+            </form>
+        </app-quiz-stepper>
+    </ng-container>
+
+    <!-- Quiz leaderboard -->
+    <ng-container *ngIf="step === 3 && !isLoading">
+        <div class="d-flex quiz_title">
+            <div class="lefttext d-flex">
+                <mat-icon class="close_icon" aria-hidden="false" color="textlight" [routerLink]="['/home']">close
+                </mat-icon>
+                <div class="info_text ml-3">{{ quizInfo.name }}</div>
+            </div>
+            <div class="d-flex">
+                <ng-container *ngIf="reviewData; else backtostpe1">
+                    <button class="mr-3" mat-raised-button color="light">
+                        Share
+                    </button>
+                    <button class="submit_btns" mat-raised-button color="secondary" (click)="reviewQuestions()">
+                        Review Questions
+                    </button>
+                </ng-container>
+                <ng-template #backtostpe1>
+                    <button class="mr-3" mat-raised-button color="light" (click)="moveTo(1)">
+                        Back
+                    </button>
+                </ng-template>
+            </div>
+        </div>
+        <div class="img_container mt-3">
+            <img *ngIf="!quizInfo?.coverImageUrl" src="https://picsum.photos/800/230" />
+            <img *ngIf="quizInfo?.coverImageUrl" [src]="quizInfo.coverImageUrl"
+                onerror="this.onerror=null;this.src='https://picsum.photos/800/230;'" />
+        </div>
+        <div class="quiz_content p-4 mx-3">
+            <h1 class="qname mb-2" *ngIf="reviewData && reviewData.rewardDescription">{{ reviewData.rewardDescription }}
+            </h1>
+            <div class="card-text d-flex">
+                <div class="duration sub_text">
+                    <mat-icon aria-hidden="false" fontSet="material-icons-outlined">watch_later</mat-icon>
+                    {{ quizInfo.durationInMinutes }} mins
+                </div>
+                <div class="sub_text ml-3">
+                    <mat-icon aria-hidden="false" fontSet="material-icons-outlined">tune</mat-icon>
+                    {{ quizInfo.numberOfQuestions }} Questions
+                </div>
+            </div>
+            <div *ngIf="reviewData && reviewData.status === 'SUBMITTED'">Your quiz submitted on
+                {{ reviewData.submittedTime | date: "medium" }}</div>
+            <h3 class="leaderboard mt-2 mb-1">Leader board</h3>
+            <mat-list class="d-flex flex-column">
+                <mat-list-item *ngFor="let info of leaderboardData">
+                    <img matListAvatar src="assets/user.png" alt="..." />
+                    <div matLine>{{ info.fullName | titlecase }}</div>
+                    <div matLine>
+                        <span class="small" color="medium">
+                            {{ info.score }}/{{info.numberOfQuestions}} in
+                            {{ timeConvertedMS2Sec(info.timeTakenInMilliSeconds) }} secs
+                        </span>
+                    </div>
+                </mat-list-item>
+            </mat-list>
+        </div>
+
+    </ng-container>
+
+    <!-- Review -->
+    <ng-container *ngIf="step === 4 && !isLoading">
+        <div class="d-flex quiz_title">
+            <div class="lefttext d-flex">
+                <mat-icon class="close_icon" aria-hidden="false" color="textlight" [routerLink]="['/home']">close
+                </mat-icon>
+                <div class="info_text ml-3">{{ quizInfo.name }}</div>
+            </div>
+            <div>
+
+            </div>
+        </div>
+
+        <app-quiz-stepper [type]="'View'" [stepsCount]="stepsCount">
+            <form class="quiz-attempts-questions">
+                <cdk-step *ngFor="let questionInfo of reviewData.attemptQuestions; let idx = index">
+                    <mat-card>
+                        <mat-card-header>
+                            <div mat-card-avatar class="header-image"></div>
+                            <mat-card-subtitle>Question No {{ idx + 1 }} of
+                                {{ reviewData.attemptQuestions.length }}</mat-card-subtitle>
+                            <mat-card-title>
+                                {{ questionInfo?.question?.text }}
+                                <div class="text-danger" *ngIf="!questionInfo.chosenOption">(Not chosen anything)</div>
+                            </mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content class="options">
+                            <ol *ngIf="questionInfo?.question?.type==='mcq' ||
+                                questionInfo?.question?.type==='MCQ'" class=" single-answer">
+                                <div class="options" *ngFor="let option of questionInfo?.question?.options; index as i">
+                                    <mat-radio-button *ngIf="questionInfo.chosenOption; else showCurrectOption"
+                                        [class.is-correct]="option.sno === questionInfo.chosenOption && option.sno === questionInfo.correctOption"
+                                        [class.is-incorrect]="(option.sno === questionInfo.chosenOption) && option.sno !== questionInfo.correctOption"
+                                        disabled>
+                                        <li>{{ option.text }}</li>
+                                    </mat-radio-button>
+                                    <section class="messages">
+                                        <div
+                                            *ngIf="(option.sno === questionInfo.chosenOption) && (option.sno === questionInfo.correctOption)">
+                                            <span
+                                                class="message correct-message">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You&apos;re
+                                                right! </span>
+                                        </div>
+                                        <div
+                                            *ngIf="(option.sno === questionInfo.chosenOption) && (option.sno !== questionInfo.correctOption)">
+                                            <span
+                                                class="message wrong-message">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;That&apos;s
+                                                wrong. The correct answer is Option
+                                                {{ questionInfo.correctOption }}
+                                            </span>
+                                        </div>
+                                    </section>
+                                    <ng-template #showCurrectOption>
+                                        <mat-radio-button [class.is-correct]="option.sno === questionInfo.correctOption"
+                                            disabled>
+                                            <li>{{ option.text }}</li>
+                                        </mat-radio-button>
+                                    </ng-template>
+                                </div>
+                            </ol>
+                        </mat-card-content>
+                    </mat-card>
+                </cdk-step>
+            </form>
+        </app-quiz-stepper>
+    </ng-container>
+</div>

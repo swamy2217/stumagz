@@ -1,0 +1,125 @@
+.content-wrapper {
+    width: 100%;
+    height: 100%;
+}
+.aside {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 1rem;
+    overflow-x: hidden;
+    padding-top: 20px;
+
+    .card {
+        background-color: #ffffff;
+        border-top-right-radius: 0.25rem;
+        display: flex;
+        border-top-left-radius: 0.25rem;
+        flex-direction: column;
+        height: 100%;
+        padding: 1rem 0.7rem;
+    }
+}
+.content-wrapper {
+    .card {
+        font-size: 1em;
+        overflow: hidden;
+        padding: 0;
+        border: none;
+        border-radius: 0.52rem;
+        min-height: 100px;
+        box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+        background: #d5d5d5;
+        cursor: pointer;
+        height: 150px;
+    }
+    .quiz-content {
+        position: absolute;
+        bottom: 12px;
+        left: 20px;
+        .card-title {
+            font-size: 1.28em;
+            font-weight: 700;
+            line-height: 1.28em;
+            color: #fff;
+        }
+
+        .card-text {
+            clear: both;
+            margin-top: 0.45rem;
+            color: #c2c1c6;
+            font-size: 0.8rem;
+        }
+    }
+
+    .card-img-top {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: #a16e6e;
+        border-radius: 0.52rem;
+    }
+}
+/* @media screen and (max-width: 767px) {
+    .app-home {
+        width: 100%;
+        height: 100%;
+    }
+} */
+@media screen and (max-width: 767px) {
+    .content-wrapper {
+        .card {
+            height: 120px;
+            font-size: 0.891em;
+        }
+    }
+    mat-sidenav {
+        width: 85%;
+    }
+}
+.quiz_subhead {
+    font-weight: 700;
+    margin: 1rem 0;
+}
+.feature_title {
+    mat-icon {
+        font-size: 2.83rem;
+        margin-right: 1rem;
+        font-weight: 700;
+        color: #000;
+        cursor: pointer;
+    }
+}
+.content-wrapper .quiz-content {
+    .card-title {
+        font-size: 1rem !important;
+    }
+}
+@media screen and (min-width: 1279px) {
+    .content-wrapper {
+        height: calc(100vh - 3rem);
+        width: calc(100% - 240px);
+    }
+    .aside {
+        width: 240px;
+    }
+}
+.app-drawer-container {
+    flex: 1;
+}
+
+.mat-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.app-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}

@@ -1,0 +1,307 @@
+<div class="container quiz-container" [ngClass]="{ disabled: isLoading }">
+    <div class="lefttext d-flex">
+        <mat-icon class="close_icon" aria-hidden="false" color="textlight" [routerLink]="['/home']"
+            [ngClass]="{ disabled: isLoading }">close</mat-icon>
+        <div class="info_text ml-2">Add Cover, Title, Category</div>
+    </div>
+
+    <app-custom-stepper (isPublished)="pubishForm($event)" [isSubmitted]="isPublishButtonClicked" [type]="'Publish'">
+        <form [formGroup]="addQuizForm" novalidate>
+            <cdk-step>
+                <div class="card-item w-100 step1 mb-3">
+                    <div class="col-md-8 mb-4">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Quiz Name</mat-label>
+                            <input matInput autocomplete="off" formControlName="name" required />
+                            <!-- <mat-error>Quiz name is required</mat-error> -->
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Description</mat-label>
+                            <textarea matInput formControlName="description" rows="4"
+                                placeholder="Enter Quiz description" required></textarea>
+                            <!-- <mat-error *ngIf="description.hasError('required')">
+                                Description is required
+                            </mat-error> -->
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Instructions</mat-label>
+                            <textarea matInput rows="4" formControlName="instructions"
+                                placeholder="Enter Quiz description" required></textarea>
+                            <!-- <mat-error
+                                *ngIf="instructions.hasError('required')"
+                            >
+                                Instructions is required
+                            </mat-error> -->
+                        </mat-form-field>
+                    </div>
+
+                    <h3 class="card_item_title">Add Cover Pic</h3>
+                    <div class="add-image">
+                        <input class="image_file" type="file" accept="image/*" placeholder="Add image"
+                            (change)="onFileSelect($event)" required />
+                        <div class="image-text" *ngIf="!imgsrc">
+                            <div>Add image</div>
+                        </div>
+                        <img [src]="imgsrc" *ngIf="imgsrc" />
+                        <input type="hidden" formControlName="coverImageUrl" />
+                    </div>
+                    <div class="text-right x-small"> Min. resolution should be 800px*300px</div>
+                </div>
+
+                <div class="card-item w-100 step1">
+                    <div class="col-md-8">
+                        <h3 class="card_item_title">Add Quiz Type</h3>
+                        <mat-form-field appearance="outline" class="w-100 mb-4">
+                            <mat-label>Quiz type</mat-label>
+                            <mat-select (selectionChange)="onChange($event)" formControlName="type" required>
+                                <mat-option *ngFor="let feature of features" [value]="feature">
+                                    {{ feature | titlecase }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="w-100 mb-4" *ngIf="showInput">
+                            <mat-label>{{ showInput | titlecase }} Name</mat-label>
+                            <input matInput maxlength="250" autocomplete="off" formControlName="brandCode" />
+                            <mat-error>{{ showInput | titlecase }} name is
+                                required</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </cdk-step>
+
+            <cdk-step>
+                <div class="card-item w-100 step2 mb-3">
+                    <h3 class="card_item_title">Embed Video URL</h3>
+
+                    <div class="col-md-8">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>URL</mat-label>
+                            <input matInput maxlength="250" autocomplete="off" formControlName="videoUrl" />
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="card-item w-100 step2">
+                    <h3 class="card_item_title">Add Timing</h3>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>No.of Questions</mat-label>
+                                <input type="number" autocomplete="off" matInput placeholder="Ex: 10"
+                                    formControlName="numberOfQuestions" required />
+                                <mat-hint align="end" class="text-right x-small mt-2"> Add atleast 5 Questions
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+
+                        <mat-form-field appearance="outline" class="col-md-6 col-lg-4">
+                            <mat-label>Duration</mat-label>
+                            <input type="number" autocomplete="off" matInput placeholder="Ex: 10"
+                                formControlName="durationInMinutes" required />
+                            <mat-hint align="end" class="text-right x-small mt-2"> enter no'of minutes
+                            </mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-form-field appearance="outline" class="col-md-6 col-lg-4">
+                            <mat-label>Start Time</mat-label>
+                            <!-- formControlName="date" -->
+                            <input matInput [ngxMatDatetimePicker]="picker" placeholder="Start Time" [min]="minDate"
+                                autocomplete="off" formControlName="startTime" readonly required />
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <ngx-mat-datetime-picker #picker [showSeconds]="showSeconds"></ngx-mat-datetime-picker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="col-md-6 col-lg-4">
+                            <mat-label>End Time</mat-label>
+                            <input matInput [ngxMatDatetimePicker]="picker1" placeholder="End Time" autocomplete="off"
+                                formControlName="endTime" [min]="minDate" readonly required />
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <ngx-mat-datetime-picker #picker1 [showSeconds]="showSeconds"></ngx-mat-datetime-picker>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </cdk-step>
+
+            <!-- Step 3 = Question section starts here -->
+            <cdk-step>
+                <div class="card-item w-100 create_qts_container">
+                    <div class="alert"
+                        [ngClass]="{'alert-danger': errorMessage.length > 0, 'alert-success': successMessage.length > 0}"
+                        *ngIf="(errorMessage.length > 0 || successMessage.length > 0)">
+                        {{errorMessage}} </div>
+                    <div class="d-flex">
+                        <div class="qtns"></div>
+                        <div class="ml-auto">
+                            <div class="text-danger" *ngIf="fileError"> {{fileError}} </div>
+                            <button mat-button (click)="fileInput.click()">{{QuestionsFileName}}</button>
+                            <input hidden (change)="onQuestionFileImport($event)" #fileInput type="file"
+                                accept=".csv, text/csv, .xlsx">
+
+
+                            <button mat-button [matMenuTriggerFor]="quest" color="secondary" class="mb-3 ml-2">ADD
+                                QUESTION</button>
+                            <mat-menu #quest="matMenu">
+                                <button mat-menu-item (click)="addMCQQuestion()">MCQ</button>
+                                <button mat-menu-item (click)="addTrueFalseQuestion()"> TRUE/ FALSE </button>
+                            </mat-menu>
+                        </div>
+                    </div>
+                    <div formArrayName="questions" class="questions_block" *ngFor="
+                            let question of quizFormGroup.controls;
+                            let idx = index
+                        ">
+                        <ng-container [formGroupName]="idx">
+                            <div class="d-space-between">
+                                <h4 class="mb-1 fw-600">
+                                    Question No {{ idx + 1 }} of
+                                    {{ quizFormGroup.controls.length }}
+
+                                </h4>
+                                <mat-icon class="close_icon" aria-hidden="false" color="textlight"
+                                    (click)="removeQuestion(idx)">close</mat-icon>
+                            </div>
+
+                            <!-- if question is MCQ -->
+                            <div class="card w-100 mb-4" *ngIf="anArray.value[idx].type === 'MCQ'; else trueFalseQts">
+                                <div class="row">
+                                    <input formControlName="sno" [value]="idx" type="hidden" />
+                                    <input formControlName="imageUrl" [value]="" type="hidden" />
+                                    <div class="col-12">
+                                        <mat-form-field appearance="outline" class="w-100 form-field">
+                                            <mat-label>Question Name</mat-label>
+                                            <input matInput autocomplete="off" formControlName="text" />
+                                            <div class="ml-2 option_file">
+                                                <mat-icon color="textlight" aria-hidden="false" class="image_thumbnail"
+                                                    *ngIf="!anArray.value[idx].imageUrl">
+                                                    save
+                                                </mat-icon>
+                                                <input class="image_file" type="file" accept="image/*"
+                                                    (change)="onQuestionFileSelect($event, idx, -1)" />
+                                                <img class="z10 image_thumbnail" [src]="anArray.value[idx].imageUrl"
+                                                    *ngIf="anArray.value[idx].imageUrl" />
+                                            </div>
+                                        </mat-form-field>
+                                        <mat-error class="mat-small"
+                                            *ngIf="question.controls['text'].touched && question.hasError('atLeastOne')">
+                                            Question is required
+                                        </mat-error>
+                                    </div>
+                                </div>
+                                <mat-radio-group #rGroup>
+                                    <div class="row" formArrayName="options">
+                                        <ng-container [formGroupName]="ipx" *ngFor="
+                                                let option of getOptions(
+                                                    question
+                                                );
+                                                let ipx = index
+                                            ">
+                                            <input formControlName="sno" type="hidden" />
+                                            <input formControlName="imageUrl" type="hidden" />
+                                            <input type="hidden" formControlName="correctOption" />
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="w-100 form-field">
+                                                    <mat-label>Option
+                                                        {{ ipx + 1 }}</mat-label>
+                                                    <input autocomplete="off" matInput formControlName="text" />
+                                                    <mat-radio-button [value]="ipx" radioGroup="rGroup"
+                                                        (change)="radioChange($event, idx)"
+                                                        [checked]="anArray.value[idx].options[ipx].correctOption">
+                                                        <mat-icon aria-hidden="false">
+                                                            thumb_up
+                                                        </mat-icon>
+                                                    </mat-radio-button>
+                                                    <div class="ml-2 option_file">
+                                                        <mat-icon color="textlight" (click)="addPhoto()"
+                                                            aria-hidden="false" class="cursor-pointer image_thumbnail"
+                                                            *ngIf="!anArray.value[idx].options[ipx].imageUrl">
+                                                            save
+                                                        </mat-icon>
+                                                        <input class="image_file" type="file" accept="image/*"
+                                                            (change)="onQuestionFileSelect($event, idx, ipx)" />
+                                                        <img class="z10 image_thumbnail"
+                                                            [src]="anArray.value[idx].options[ipx].imageUrl"
+                                                            *ngIf="anArray.value[idx].options[ipx].imageUrl" />
+                                                    </div>
+                                                </mat-form-field>
+                                                <mat-error class="mat-small"
+                                                    *ngIf="option.controls['text'].touched && option.hasError('atLeastOne')">
+                                                    field is required
+                                                </mat-error>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </mat-radio-group>
+                            </div>
+
+                            <!-- else True false questions -->
+                            <ng-template #trueFalseQts>
+                                <div class="row">
+                                    <input formControlName="sno" [value]="idx" type="hidden" />
+                                    <input formControlName="imageUrl" [value]="" type="hidden" />
+                                    <mat-form-field appearance="outline" class="col-12 form-field">
+                                        <mat-label>Question Name</mat-label>
+                                        <input matInput autocomplete="off" formControlName="text" />
+                                        <div class="ml-2 option_file">
+                                            <mat-icon color="textlight" aria-hidden="false" class="image_thumbnail"
+                                                *ngIf="!anArray.value[idx].imageUrl">
+                                                save
+                                            </mat-icon>
+                                            <input class="image_file" type="file" accept="image/*"
+                                                (change)="onQuestionFileSelect($event, idx, -1)" />
+                                            <img class="z10 image_thumbnail" [src]="anArray.value[idx].imageUrl"
+                                                *ngIf="anArray.value[idx].imageUrl" />
+                                        </div>
+                                    </mat-form-field>
+                                    <mat-error class="col-12 mat-small"
+                                        *ngIf="question.controls['text'].touched && question.hasError('atLeastOne')">
+                                        Question is required
+                                    </mat-error>
+                                </div>
+                                <mat-radio-group #rGroup>
+                                    <div class="row" formArrayName="options">
+                                        <ng-container [formGroupName]="ipx" *ngFor="
+                                                let option of getOptions(
+                                                    question
+                                                );
+                                                let ipx = index
+                                            ">
+                                            <input formControlName="sno" type="hidden" />
+                                            <input formControlName="imageUrl" type="hidden" />
+                                            <input type="hidden" formControlName="correctOption" />
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="w-100 form-field">
+                                                    <mat-label>Option
+                                                        {{ ipx + 1 }}</mat-label>
+                                                    <input autocomplete="off" matInput formControlName="text"
+                                                        readonly />
+                                                    <mat-radio-button [value]="ipx" radioGroup="rGroup"
+                                                        (change)="radioChange($event, idx)"
+                                                        [checked]="anArray.value[idx].options[ipx].correctOption">
+                                                        <mat-icon aria-hidden="false">
+                                                            thumb_up
+                                                        </mat-icon>
+                                                    </mat-radio-button>
+                                                    <mat-error class="mat-small"
+                                                        *ngIf="option.controls['text'].touched && option.hasError('atLeastOne')">
+                                                        field is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </mat-radio-group>
+                            </ng-template>
+                        </ng-container>
+                    </div>
+                </div>
+            </cdk-step>
+        </form>
+    </app-custom-stepper>
+    <div *ngIf="isQuestionsLoading" class="app-spinner">
+        <div class="spin-loader">Loading...</div>
+    </div>
+</div>
